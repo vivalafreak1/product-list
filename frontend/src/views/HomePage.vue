@@ -64,7 +64,7 @@ export default {
       this.products = response.data;
     },
     editProduct(id) {
-      this.$router.push({ name: "EditProduct", params: { id } });
+      this.$router.push({ name: "EditProduct", params: { id: String(id) } });
     },
     async deleteProduct(id) {
       await axios.delete(`http://localhost:3000/products/${id}`);

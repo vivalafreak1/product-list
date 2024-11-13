@@ -54,6 +54,7 @@ export default {
   data() {
     return {
       product: {
+        id: "", // Will be dynamically generated
         name: "",
         imageUrl: "",
         stock: 0,
@@ -62,9 +63,19 @@ export default {
   },
   methods: {
     async createProduct() {
+      // Generate the product ID using current timestamp
+      this.product.id = String(+new Date());
+
+      // Send the product data with custom ID
       await axios.post("http://localhost:3000/products", this.product);
+
+      // Redirect to the home page after product is created
       this.$router.push({ name: "Home" });
     },
   },
 };
 </script>
+
+<style>
+/* Add any custom styles here */
+</style>

@@ -14,7 +14,7 @@ generator client {
 }
 
 model Product {
-  id          Int    @id @default(autoincrement())
+  id          String @id 
   name        String
   imageUrl    String
   stock       Int

@@ -1,11 +1,10 @@
 <template>
-  <div id="app">
+  <div id="app" class="flex flex-col min-h-screen">
     <!-- Header component -->
     <HeaderComponent />
 
     <!-- Router view to display the current route component -->
-    <router-view></router-view>
-
+    <router-view class="flex-grow"></router-view>
     <!-- Footer component -->
     <FooterComponent />
   </div>
@@ -32,7 +31,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 
 /* Global styles for mobile responsiveness */
