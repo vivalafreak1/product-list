@@ -21,12 +21,12 @@ app.get("/products/:id", async (req, res) => {
 
 app.put("/products/:id", async (req, res) => {
   const { id } = req.params;
-  const { name, imageUrl, stock } = req.body;
+  const { name, imageUrl, stock, price } = req.body;
 
   try {
     const updatedProduct = await prisma.product.update({
       where: { id },
-      data: { name, imageUrl, stock },
+      data: { name, imageUrl, stock, price },
     });
     res.json(updatedProduct);
   } catch (error) {
@@ -36,11 +36,28 @@ app.put("/products/:id", async (req, res) => {
 });
 
 app.post("/products", async (req, res) => {
-  const { name, imageUrl, stock } = req.body;
-  const newProduct = await prisma.product.create({
-    data: { id: String(+new Date()), name, imageUrl, stock },
-  });
-  res.json(newProduct);
+  const { name, imageUrl, stock, price } = req.body;
+
+  // Ensure price is a valid number
+  if (isNaN(price) || price <= 0) {
+    return res.status(400).json({ message: "Invalid price" });
+  }
+
+  try {
+    const newProduct = await prisma.product.create({
+      data: {
+        id: String(+new Date()), // Dynamically generate ID
+        name,
+        imageUrl,
+        stock,
+        price, // Use the actual price value from the request
+      },
+    });
+    res.json(newProduct);
+  } catch (error) {
+    console.error("Error creating product:", error);
+    res.status(500).json({ message: "Failed to create product" });
+  }
 });
 
 app.delete("/products/:id", async (req, res) => {

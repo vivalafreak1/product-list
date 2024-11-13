@@ -14,8 +14,9 @@ generator client {
 }
 
 model Product {
-  id          String @id 
+  id          String   @id 
   name        String
+  price       Float 
   imageUrl    String
   stock       Int
   createdAt   DateTime @default(now())

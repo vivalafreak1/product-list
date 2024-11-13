@@ -7,6 +7,7 @@ async function main() {
     name: `Sample Product ${i + 1}`,
     imageUrl: "https://via.placeholder.com/150",
     stock: Math.floor(Math.random() * 100) + 1, // Random stock between 1 and 100
+    price: parseFloat(Math.random() * 1000000),
   }));
 
   await prisma.product.createMany({

@@ -1,5 +1,5 @@
 export function formatDate(date) {
-  return new Date(date).toLocaleString("id-ID", {
+  const formattedDate = new Date(date).toLocaleString("id-ID", {
     year: "numeric",
     month: "short",
     day: "numeric",
@@ -8,4 +8,6 @@ export function formatDate(date) {
     second: "2-digit",
     hour12: false,
   });
+
+  return formattedDate.replace(/\./g, ":");
 }

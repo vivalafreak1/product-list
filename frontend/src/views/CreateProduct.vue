@@ -14,6 +14,19 @@
             maxlength="100"
           />
         </div>
+        <!-- Add price input here -->
+        <div class="mt-4">
+          <label for="price" class="block">Price (Rp)</label>
+          <input
+            v-model="product.price"
+            type="number"
+            id="price"
+            class="w-full px-4 py-2 border rounded"
+            required
+            min="0"
+            step="0.01"
+          />
+        </div>
         <div class="mt-4">
           <label for="imageUrl" class="block">Product Image URL</label>
           <input
@@ -61,6 +74,7 @@ export default {
         name: "",
         imageUrl: "",
         stock: 0,
+        price: 0, // Add price to the product object
       },
     };
   },

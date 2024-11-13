@@ -1,50 +1,61 @@
 <template>
-  <div class="flex justify-center py-6 mx-auto">
-    <div class="w-full max-w-xl p-6 bg-white rounded-md shadow-md">
-      <h1 class="mb-4 text-xl font-bold">Edit Product</h1>
-      <form @submit.prevent="updateProduct">
-        <div class="mb-4">
-          <label for="name" class="block text-sm font-medium text-gray-700"
-            >Product Name</label
-          >
+  <div>
+    <div class="container py-6 mx-auto">
+      <h1 class="text-xl font-bold">Edit Product</h1>
+      <form @submit.prevent="updateProduct" class="mt-4">
+        <div>
+          <label for="name" class="block">Product Name</label>
           <input
             v-model="product.name"
             type="text"
             id="name"
-            class="block w-full mt-1 border-gray-300 rounded-md shadow-sm"
+            class="w-full px-4 py-2 border rounded"
             required
             maxlength="100"
           />
         </div>
-        <div class="mb-4">
-          <label for="imageUrl" class="block text-sm font-medium text-gray-700"
-            >Image URL</label
-          >
+
+        <!-- Add price input here -->
+        <div class="mt-4">
+          <label for="price" class="block">Price (Rp)</label>
           <input
-            v-model="product.imageUrl"
-            type="url"
-            id="imageUrl"
-            class="block w-full mt-1 border-gray-300 rounded-md shadow-sm"
+            v-model="formattedPrice"
+            @input="formatPrice"
+            type="text"
+            id="price"
+            class="w-full px-4 py-2 border rounded"
+            required
           />
         </div>
-        <div class="mb-4">
-          <label for="stock" class="block text-sm font-medium text-gray-700"
-            >Stock</label
-          >
+
+        <div class="mt-4">
+          <label for="imageUrl" class="block">Product Image URL</label>
+          <input
+            v-model="product.imageUrl"
+            type="text"
+            id="imageUrl"
+            class="w-full px-4 py-2 border rounded"
+            required
+          />
+        </div>
+
+        <div class="mt-4">
+          <label for="stock" class="block">Stock</label>
           <input
             v-model="product.stock"
             type="number"
             id="stock"
-            class="block w-full mt-1 border-gray-300 rounded-md shadow-sm"
+            class="w-full px-4 py-2 border rounded"
             required
             min="0"
             max="1000"
           />
         </div>
-        <div class="flex items-center justify-end">
+
+        <div class="flex items-center justify-end mt-4">
           <button
             type="submit"
-            class="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
+            class="px-4 py-2 text-white bg-blue-500 rounded"
           >
             Save Changes
           </button>
@@ -71,11 +82,18 @@ export default {
         name: "",
         imageUrl: "",
         stock: 0,
+        price: 0, // Add price to the product object
       },
+      formattedPrice: "", // Add a separate field for formatted price
     };
   },
   async created() {
     await this.fetchProduct();
+  },
+  watch: {
+    "product.price"(newPrice) {
+      this.formattedPrice = this.formatCurrency(newPrice);
+    },
   },
   methods: {
     async fetchProduct() {
@@ -84,12 +102,14 @@ export default {
           `http://localhost:3000/products/${this.$route.params.id}`
         );
         this.product = response.data;
+        this.formattedPrice = this.formatCurrency(this.product.price);
       } catch (error) {
         console.error("Failed to fetch product:", error);
         alert("Failed to fetch product details. Please try again.");
       }
     },
     async updateProduct() {
+      this.product.price = this.removeCurrencyFormatting(this.formattedPrice); // remove formatting before updating
       try {
         await axios.put(
           `http://localhost:3000/products/${this.$route.params.id}`,
@@ -104,10 +124,26 @@ export default {
     cancelEdit() {
       this.$router.push({ name: "Home" });
     },
+    formatPrice() {
+      // Format the price as currency (remove decimal)
+      const price = this.removeCurrencyFormatting(this.formattedPrice);
+      this.product.price = price;
+      this.formattedPrice = this.formatCurrency(price);
+    },
+    formatCurrency(value) {
+      return value
+        .toString()
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",") // Add commas for thousands
+        .replace(/\..*/, ""); // Remove decimals
+    },
+    removeCurrencyFormatting(value) {
+      // Remove commas and return a number
+      return parseInt(value.replace(/[^0-9]/g, ""), 10);
+    },
   },
 };
 </script>
 
 <style scoped>
-/* Optional styles to enhance the form layout */
+/* Add any custom styles here */
 </style>

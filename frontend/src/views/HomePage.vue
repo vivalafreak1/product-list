@@ -8,6 +8,7 @@
             <th class="px-4 py-2 border">No</th>
             <th class="px-4 py-2 border">Product Image</th>
             <th class="px-4 py-2 border">Name</th>
+            <th class="px-4 py-2 border">Price</th>
             <th class="px-4 py-2 border">Stock</th>
             <th class="px-4 py-2 border">Created At</th>
             <th class="px-4 py-2 border">Updated At</th>
@@ -24,9 +25,15 @@
                 class="object-cover w-[50px] h-[50px]"
               />
             </td>
-            <td class="px-4 py-2 border">{{ product.name }}</td>
+            <td
+              class="px-4 py-2 border overflow-hidden text-ellipsis whitespace-nowrap max-w-[300px]"
+            >
+              {{ product.name }}
+            </td>
+            <td class="px-4 py-2 border">
+              {{ formatCurrency(product.price) }}
+            </td>
             <td class="px-4 py-2 border">{{ product.stock }}</td>
-            <!-- Display createdAt and updatedAt dates -->
             <td class="px-4 py-2 border">
               {{ formatDate(product.createdAt) }}
             </td>
@@ -70,6 +77,7 @@
 <script>
 import axios from "axios";
 import { formatDate } from "@/utils/formatDate";
+import { formatCurrency } from "@/utils/formatCurrency";
 
 export default {
   data() {
@@ -81,8 +89,10 @@ export default {
   mounted() {
     this.fetchProducts();
   },
+
   methods: {
     formatDate,
+    formatCurrency,
     async fetchProducts() {
       const response = await axios.get("http://localhost:3000/products");
       this.products = response.data;
