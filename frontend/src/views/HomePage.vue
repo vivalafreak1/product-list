@@ -5,10 +5,12 @@
       <table class="min-w-full mt-4 border-collapse table-auto">
         <thead>
           <tr>
-            <th class="px-4 py-2 border">#</th>
+            <th class="px-4 py-2 border">No</th>
             <th class="px-4 py-2 border">Product Image</th>
             <th class="px-4 py-2 border">Name</th>
             <th class="px-4 py-2 border">Stock</th>
+            <th class="px-4 py-2 border">Created At</th>
+            <th class="px-4 py-2 border">Updated At</th>
             <th class="px-4 py-2 border">Actions</th>
           </tr>
         </thead>
@@ -24,6 +26,13 @@
             </td>
             <td class="px-4 py-2 border">{{ product.name }}</td>
             <td class="px-4 py-2 border">{{ product.stock }}</td>
+            <!-- Display createdAt and updatedAt dates -->
+            <td class="px-4 py-2 border">
+              {{ formatDate(product.createdAt) }}
+            </td>
+            <td class="px-4 py-2 border">
+              {{ formatDate(product.updatedAt) }}
+            </td>
             <td class="px-4 py-2 border">
               <button
                 @click="editProduct(product.id)"
@@ -60,18 +69,20 @@
 
 <script>
 import axios from "axios";
+import { formatDate } from "@/utils/formatDate";
 
 export default {
-  components: {},
   data() {
     return {
       products: [],
     };
   },
+
   mounted() {
     this.fetchProducts();
   },
   methods: {
+    formatDate,
     async fetchProducts() {
       const response = await axios.get("http://localhost:3000/products");
       this.products = response.data;

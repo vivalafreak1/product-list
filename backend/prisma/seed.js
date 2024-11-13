@@ -2,18 +2,24 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 async function main() {
-  await prisma.product.create({
-    data: {
-      name: "Sample Product",
-      imageUrl: "https://via.placeholder.com/150",
-      stock: 10,
-    },
+  const sampleProducts = Array.from({ length: 30 }, (_, i) => ({
+    id: `product-${Date.now()}-${i}`,
+    name: `Sample Product ${i + 1}`,
+    imageUrl: "https://via.placeholder.com/150",
+    stock: Math.floor(Math.random() * 100) + 1, // Random stock between 1 and 100
+  }));
+
+  await prisma.product.createMany({
+    data: sampleProducts,
   });
+
+  console.log("Seeding complete: 30 products added");
 }
 
 main()
   .catch((e) => {
-    throw e;
+    console.error(e);
+    process.exit(1);
   })
   .finally(async () => {
     await prisma.$disconnect();
