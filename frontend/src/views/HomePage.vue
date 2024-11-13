@@ -19,7 +19,7 @@
               <img
                 :src="product.imageUrl"
                 alt="Product Image"
-                class="object-cover w-16 h-16"
+                class="object-cover w-[50px] h-[50px]"
               />
             </td>
             <td class="px-4 py-2 border">{{ product.name }}</td>
@@ -37,11 +37,24 @@
               >
                 Delete
               </button>
+              <router-link
+                :to="{ name: 'ProductDetail', params: { id: product.id } }"
+                class="px-2 py-1 text-white bg-green-500 rounded"
+              >
+                View
+              </router-link>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
+    <!-- Floating Action Button (FAB) -->
+    <router-link
+      to="/create"
+      class="fixed p-4 text-white transition bg-blue-500 rounded-full shadow-lg bottom-4 right-4 hover:bg-blue-600"
+    >
+      <span class="text-xl">+</span>
+    </router-link>
   </div>
 </template>
 
