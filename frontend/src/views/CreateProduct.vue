@@ -11,6 +11,7 @@
             id="name"
             class="w-full px-4 py-2 border rounded"
             required
+            maxlength="100"
           />
         </div>
         <div class="mt-4">
@@ -31,6 +32,8 @@
             id="stock"
             class="w-full px-4 py-2 border rounded"
             required
+            min="0"
+            max="1000"
           />
         </div>
         <div class="mt-4">

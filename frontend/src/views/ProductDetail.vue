@@ -1,29 +1,34 @@
 <template>
-  <div class="container py-6 mx-auto">
+  <div class="container max-w-screen-xl py-6 mx-auto">
     <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
       <!-- Column 1: Image -->
-      <div>
+      <div class="flex justify-center">
         <img
           :src="product.imageUrl"
           alt="Product Image"
-          class="object-cover w-full h-64 rounded-lg shadow-lg"
+          class="object-cover w-[300px] h-[300px] rounded-lg shadow-lg"
         />
       </div>
 
       <!-- Column 2: Product Details -->
-      <div>
+      <div class="flex flex-col justify-start">
         <div class="mb-4">
-          <h1 class="mb-6 text-2xl font-bold">{{ product.name }}</h1>
+          <!-- Allow name to break into multiple lines if it is long -->
+          <h1 class="text-2xl font-bold break-words">{{ product.name }}</h1>
         </div>
+
         <div class="mb-4">
+          <!-- Align stock to the left -->
           <p class="text-lg font-medium">
-            Stock: <span class="text-gray-600">{{ product.stock }}</span>
+            <span class="font-semibold">Stock:</span>
+            <span class="text-gray-600">{{ product.stock }}</span>
           </p>
         </div>
 
         <div class="mb-4">
+          <!-- Align createdAt to the left -->
           <p class="text-lg font-medium">
-            Created At:
+            <span class="font-semibold">Created At:</span>
             <span class="text-gray-600">{{
               formatDate(product.createdAt)
             }}</span>
@@ -31,8 +36,9 @@
         </div>
 
         <div class="mb-4">
+          <!-- Align updatedAt to the left -->
           <p class="text-lg font-medium">
-            Updated At:
+            <span class="font-semibold">Updated At:</span>
             <span class="text-gray-600">{{
               formatDate(product.updatedAt)
             }}</span>
@@ -45,7 +51,7 @@
 
 <script>
 import axios from "axios";
-import { formatDate } from "@/utils/formatDate"; // Assuming you have a formatDate component
+import { formatDate } from "@/utils/formatDate"; // Assuming you have a formatDate function
 
 export default {
   data() {
@@ -57,6 +63,7 @@ export default {
   methods: {
     formatDate,
   },
+
   async mounted() {
     const response = await axios.get(
       `http://localhost:3000/products/${this.$route.params.id}`
